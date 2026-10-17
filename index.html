@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Universitaria</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background: #f1f5f9;
+    }
+
+    h1 { color: #1d4ed8; }
+
+    input, select, button {
+      padding: 10px;
+      margin: 5px;
+    }
+
+    .libro {
+      background: white;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Biblioteca Universitaria</h1>
+  <p>Busca libros y consulta los ejemplares disponibles.</p>
+
+  <input id="buscar" placeholder="Título, autor o ISBN">
+
+  <select id="categoria">
+    <option value="">Todas las categorías</option>
+    <option value="Programación">Programación</option>
+    <option value="Matemáticas">Matemáticas</option>
+    <option value="Historia">Historia</option>
+  </select>
+
+  <button onclick="mostrarLibros()">Buscar</button>
+
+  <h3 id="total"></h3>
+  <div id="resultados"></div>
+
+  <script>
+    const libros = [
+      {
+        titulo: "JavaScript básico",
+        autor: "Juan Pérez",
+        isbn: "12345",
+        categoria: "Programación",
+        stock: 5
+      },
+      {
+        titulo: "Matemáticas universitarias",
+        autor: "Ana López",
+        isbn: "67890",
+        categoria: "Matemáticas",
+        stock: 3
+      },
+      {
+        titulo: "Historia del Perú",
+        autor: "Carlos Ruiz",
+        isbn: "54321",
+        categoria: "Historia",
+        stock: 0
+      }
+    ];
+
+    function mostrarLibros() {
+      const texto = document.getElementById("buscar").value.toLowerCase();
+      const categoria = document.getElementById("categoria").value;
+
+      const encontrados = libros.filter(libro =>
+        (libro.titulo.toLowerCase().includes(texto) ||
+         libro.autor.toLowerCase().includes(texto) ||
+         libro.isbn.includes(texto)) &&
+        (!categoria || libro.categoria === categoria)
+      );
+
+      document.getElementById("total").textContent =
+        "Libros encontrados: " + encontrados.length;
+
+      document.getElementById("resultados").innerHTML =
+        encontrados.length
+          ? encontrados.map(libro => `
+              <div class="libro">
+                <h3>${libro.titulo}</h3>
+                <p>Autor: ${libro.autor}</p>
+                <p>ISBN: ${libro.isbn}</p>
+                <p>Categoría: ${libro.categoria}</p>
+                <p>Disponibles: ${libro.stock}</p>
+              </div>
+            `).join("")
+          : "<p>No se encontraron libros.</p>";
+    }
+
+    mostrarLibros();
+  </script>
+
+</body>
+</html>
